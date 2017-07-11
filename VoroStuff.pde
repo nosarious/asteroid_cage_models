@@ -9,7 +9,7 @@ HE_MeshCollection createVoro(HE_Mesh outerShape){
   HEMC_VoronoiCells multiCreator=new HEMC_VoronoiCells();
   multiCreator.setPoints(thesePoints);
   // alternatively points can be WB_Point[], any Collection<WB_Point> and double[][];
-  multiCreator.setN(70);//number of points, can be smaller than number of points in input. 
+  //multiCreator.setN(70);//number of points, can be smaller than number of points in input. 
   multiCreator.setContainer(thisNewMesh);// cutoff mesh for the voronoi cells, complex meshes increase the generation time
   //multiCreator.setOffset(20);// offset of the bisector cutting planes, sides of the voronoi cells will be separated by twice this distance
   multiCreator.setSurface(false);// is container mesh a volume (false) or a surface (true)
@@ -19,7 +19,11 @@ HE_MeshCollection createVoro(HE_Mesh outerShape){
   // can help speed up things for complex container and give more stable results. Creates the voronoi cells for a simple box and
   // uses this to reduce the number of slicing operations on the actual container. Not fully tested yet.
   cells=multiCreator.create();
-  
+  /*
+  for (int i=0; i<cells.size(); i++){
+  cells.getMesh(i).validate(); 
+  }
+  */
   return cells;
 }
 

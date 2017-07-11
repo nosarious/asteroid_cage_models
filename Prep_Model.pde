@@ -1,6 +1,10 @@
 //creates the model
 
 void prepSettings(){
+  
+  //thesePoints = pointsFromLine();
+  thesePoints = pointsFromSphere();
+  
   float objectRadius = 1000;
   points =new float[500][3];
   for (int i=0;i<12;i++) {

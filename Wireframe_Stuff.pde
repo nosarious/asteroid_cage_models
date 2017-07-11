@@ -9,7 +9,7 @@ HE_Mesh createWireframes(HE_MeshCollection theseMeshes){
     thisCellMesh = theseMeshes.getMesh(i).get();
     thisNewMesh.add(createWireframe(thisCellMesh));
   }
-  //thisNewMesh.validate();
+  thisNewMesh.validate();
   //thisNewMesh.simplify(thisNewMesh);
   //println ("wireFrames are made");
   
