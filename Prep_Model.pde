@@ -2,10 +2,12 @@
 
 void prepSettings(){
   
+  aValue = int(random(360));
+  
   //thesePoints = pointsFromLine();
   thesePoints = pointsFromSphere();
   
-  float objectRadius = 1000;
+  float objectRadius = 700;
   points =new float[500][3];
   for (int i=0;i<12;i++) {
     float r = objectRadius;// + random(0.01f)-100;
@@ -35,14 +37,21 @@ void prepSettings(){
   aShape=finishRock(aShape);
   aShape.scaleSelf(0.9);
   
+  colorMode(HSB, 360);
+  color asteroidColour = color(aValue, 360,360);
+  int iValue = aValue+180;
+  if (iValue>360) iValue -= 360;
+  
+  color innerColour = color(iValue, 360,360);  //complimentary color
+  
   HE_FaceIterator fitr=bShape.fItr();
   while (fitr.hasNext()) {
-    fitr.next().setColor(color(200,10,200));
+    fitr.next().setColor(asteroidColour);
   }
   
   fitr=aShape.fItr();
   while (fitr.hasNext()) {
-    fitr.next().setColor(color(200,175,10));
+    fitr.next().setColor(innerColour);
   }
   
   HET_MeshOp.flipFaces(bShape);

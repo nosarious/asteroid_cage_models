@@ -44,8 +44,10 @@ PGraphics depthImage;
 
 HE_Mesh newMesh;
 
+int aValue;// used to generate asteroid colour, random every creation
+
 void setup(){
-  counter = 2;
+  counter = 1;
   centerPoint = new WB_SimpleCoordinate4D(0.0,0.0,0.0,0.0);
   
   size(1000,700,P3D);
@@ -63,6 +65,7 @@ void setup(){
   render=new WB_Render(this);
   
   // only used to quicken blur shader development
+  /*
   HEC_Cylinder creator=new HEC_Cylinder();
   creator.setRadius(75,50); // upper and lower radius. If one is 0, HEC_Cone is called. 
   creator.setHeight(800);
@@ -77,6 +80,7 @@ void setup(){
   while (fitr.hasNext()) {
     fitr.next().setColor(color(random(255),random(255),random(255)));
   }
+  */
 }
 
 void update(){
@@ -86,8 +90,8 @@ void update(){
 void draw(){
   background(55);
   
-  // Bind shader
-  shader(depthShader); //use of shader will ignore lighting
+  // Bind shader //shader is not working with lighting
+  //shader(depthShader); //use of shader will ignore lighting
   
   directionalLight(255, 255, 255, 1, 1, -1);
   directionalLight(127, 127, 127, -1, -1, 1);
@@ -100,7 +104,7 @@ void draw(){
     //scale (0.85);
     //translate(0.0,0.0,100);
     stroke(250,25);
-    render.drawEdges(aShape);
+    //render.drawEdges(aShape);
     //render.drawEdges(newMesh); //used to quicken shader development
     noStroke();
     //fill(255);
@@ -110,18 +114,39 @@ void draw(){
 }
 
 void drawAsteroidCells(){
-  for (int i=0; i<asteroidCells.size()-1; i++){
+  colorMode(HSB, 360);
+  color asteroidColour = color(aValue, 360,360);
+  
+  int fwValue = aValue + 150;
+  if (fwValue >360) fwValue -= 360;
+  
+  int dwValue = aValue + 200;
+  if (dwValue >360) dwValue -= 360;
+  
+  
+  color firstWireframeColour = color (fwValue, 360,200);
+  color dualWireframeColour = color (dwValue, 360,100);
+  
+  for (int i=0; i<asteroidCells.size(); i++){
     if (((i % counter) == 0)){
       //noFill();
       if (cellCounter == 1){
-      fill(255,255,0);
-        render.drawFaces(allDualWireFrames.getMesh(i));
+        fill(dualWireframeColour);
+        try{
+          render.drawFaces(allDualWireFrames.getMesh(i));
+        } catch (final Exception ex) {
+          println("failed cell at "+ i);
+        }
       } else {
-      fill(255,0,0);
-        render.drawFaces(allFirstWireFrames.getMesh(i));
+        fill(firstWireframeColour);
+        try{
+          render.drawFaces(allFirstWireFrames.getMesh(i));
+        } catch (final Exception ex) {
+          println("failed cell at "+ i);
+        }
       }
-    } 
-    if (!((i % counter) == 0)){
+    } else {
+    //if (!((i % counter) == 0)){
       fill(255);
       noStroke();
       //stroke(0);
@@ -137,7 +162,7 @@ void mousePressed(){
 void keyPressed(){
   if (key==' '){ //change which cells are shown/hidden (uses %)
     counter ++;
-    if (counter>8) counter = 2;
+    if (counter>8) counter = 1;
     println(counter);
   }
   if (key=='.'){ //change which wireframe is shown

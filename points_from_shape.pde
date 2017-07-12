@@ -9,8 +9,8 @@ List <WB_Coord> pointsFromLine(){
   HEM_Twist modifier;
   HEC_Cylinder creator=new HEC_Cylinder();
   creator.setRadius(75,50); // upper and lower radius. If one is 0, HEC_Cone is called. 
-  creator.setHeight(800);
-  creator.setFacets(7).setSteps(4);
+  creator.setHeight(1000);
+  creator.setFacets(5).setSteps(3);
   creator.setCap(true,true);// cap top, cap bottom?
   //Default axis of the cylinder is (0,1,0). To change this use the HEC_Creator method setZAxis(..).
   creator.setZAxis(0,1,1);

@@ -2,12 +2,23 @@
 HE_Mesh createWireframes(HE_MeshCollection theseMeshes){
   HE_Mesh thisNewMesh = new HE_Mesh();
   int numcells=theseMeshes.size();
-  boolean[] isCellOn=new boolean[numcells];
+  //boolean[] isCellOn=new boolean[numcells];
   for (int i=0; i<numcells; i++) {
     //print(" "+ i );
     HE_Mesh thisCellMesh = new HE_Mesh();
     thisCellMesh = theseMeshes.getMesh(i).get();
-    thisNewMesh.add(createWireframe(thisCellMesh));
+    HE_Mesh thisWireframeMesh = new HE_Mesh();
+    thisWireframeMesh = createWireframe(thisCellMesh);
+    boolean passed = false;
+    try{
+      render.drawFaces(thisWireframeMesh);
+      passed = true;
+    } catch (final Exception ex) {
+      println("failed cell at "+ i);
+    }
+    if (passed){
+      thisNewMesh.add(thisWireframeMesh);
+    }
   }
   thisNewMesh.validate();
   //thisNewMesh.simplify(thisNewMesh);
@@ -35,7 +46,7 @@ HE_Mesh createWireframe(HE_Mesh thisMesh){
   modifier.setCap(true);
   thisNewMesh.modify(modifier);
   
-  thisNewMesh.fuseCoplanarFaces();
+  //thisNewMesh.fuseCoplanarFaces();
   //thisNewMesh.validate();
   
   HES_CatmullClark subdividor=new HES_CatmullClark();
@@ -44,16 +55,17 @@ HE_Mesh createWireframe(HE_Mesh thisMesh){
   //try to catmull this mesh.
   //if it doesn't work, send back unatlered mesh. 
   HE_Mesh tmp=thisNewMesh.get();
-  HES_CatmullClark subdividor=new HES_CatmullClark();
+  HES_CatmullClark subdivideTHIS=new HES_CatmullClark();
   try {
-    thisNewMesh.subdivide(subdividor, 1);
+    thisNewMesh.subdivide(subdivideTHIS, 1);
   }
   catch(final Exception ex) {
     //oops HE_Mesh messed up, retreat!
     ex.printStackTrace();
     thisNewMesh=tmp;
+    println("failed cell");
   }
-  */ 
+  */
   thisNewMesh.scaleSelf(0.96);
   return thisNewMesh;
 }

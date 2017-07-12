@@ -4,6 +4,8 @@ HE_MeshCollection createVoro(HE_Mesh outerShape){
   thisNewMesh = outerShape.get();
   
   HE_MeshCollection cells;
+  HE_MeshCollection validCells;
+  validCells = new HE_MeshCollection();
   
   // generate voronoi cells
   HEMC_VoronoiCells multiCreator=new HEMC_VoronoiCells();
@@ -19,11 +21,7 @@ HE_MeshCollection createVoro(HE_Mesh outerShape){
   // can help speed up things for complex container and give more stable results. Creates the voronoi cells for a simple box and
   // uses this to reduce the number of slicing operations on the actual container. Not fully tested yet.
   cells=multiCreator.create();
-  /*
-  for (int i=0; i<cells.size(); i++){
-  cells.getMesh(i).validate(); 
-  }
-  */
+  
   return cells;
 }
 
